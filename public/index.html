@@ -602,7 +602,7 @@
                 return;
             }
 
-            const systemPrompt = "You are a senior financial consultant. Your client, a business owner, has provided you with their key working capital metrics. Explain what these numbers mean for their business's cash flow in a single, concise paragraph. Be clear, direct, and avoid jargon.";
+            const systemPrompt = "You are a senior financial consultant. Your client, a business owner, has provided you with their key working capital metrics. Explain what these numbers mean for their business's cash flow in a single, concise paragraph. Be clear, direct, and avoid jargon. Use HTML `<strong>` tags for bolding instead of markdown.";
             const userPrompt = `My company is in the ${state.businessNature} business. Our current metrics are: Days Inventory Outstanding (DIO) of ${state.dio.toFixed(0)} days, Days Sales Outstanding (DSO) of ${state.dso.toFixed(0)} days, and Days Payable Outstanding (DPO) of ${state.dpo.toFixed(0)} days. This results in a Cash Conversion Cycle of ${state.ccc.toFixed(0)} days. What is the story these numbers tell about my business's health?`;
             
             const insight = await callGeminiAPI(systemPrompt, userPrompt);
@@ -688,7 +688,7 @@
                 return;
             }
             
-            const systemPrompt = "You are an expert financial consultant providing an action plan. Your tone is professional and direct. The output must be formatted as an HTML unordered list (`<ul>`). Do not include any introductory text before the list. Ensure the response is concise, with a maximum of 8-10 lines total, using bullet points for clarity.";
+            const systemPrompt = "You are an expert financial consultant providing an action plan. Your tone is professional and direct. The output must be formatted as an HTML unordered list (`<ul>`). Do not use markdown like asterisks. For bolding, use `<strong>` tags. Ensure the response is concise, with a maximum of 8-10 lines total, using bullet points for clarity.";
             const userPrompt = `Based on the following financial metrics for a ${state.businessNature} company, provide three concise, actionable recommendations to improve their cash conversion cycle and unlock cash. For each recommendation, bold the title (e.g., <strong>Optimize Inventory</strong>) and then explain the business impact and specific next steps. The current metrics are: DIO=${state.dio.toFixed(0)}, DSO=${state.dso.toFixed(0)}, DPO=${state.dpo.toFixed(0)}. The strategic goals are to reduce DIO by ${dioReduction} days, reduce DSO by ${dsoReduction} days, and increase DPO by ${dpoIncrease} days.`;
             
             const recommendations = await callGeminiAPI(systemPrompt, userPrompt);
@@ -749,14 +749,14 @@
                     return;
                 }
                 
-                const systemPrompt = "You are an expert financial consultant chatbot. Your goal is to help a business owner understand their working capital. Use their provided data to answer their questions concisely and clearly, in 8-10 lines max. Use bullet points. Avoid jargon where possible. Format your answers for readability in a chat window, using bold text for key terms.";
+                const systemPrompt = "You are an expert financial consultant chatbot. Your goal is to help a business owner understand their working capital. Use their provided data to answer their questions concisely and clearly, in 8-10 lines max. Use bullet points (`<li>`) within an unordered list (`<ul>`). Avoid jargon where possible. For bolding, use `<strong>` tags, not markdown asterisks.";
                 const context = `The user is running a ${state.businessNature} business. Their current metrics are: DIO=${state.dio.toFixed(0)}, DSO=${state.dso.toFixed(0)}, DPO=${state.dpo.toFixed(0)}, and CCC=${state.ccc.toFixed(0)} days. Their working capital requirement is ${new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(state.wc_req)}.`;
                 const userPrompt = `${context}\n\nThe user's question is: "${userMessage}"`;
 
                 const aiResponse = await callGeminiAPI(systemPrompt, userPrompt);
                 
                 chatHistory.removeChild(loaderDiv);
-                addMessage(aiResponse.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>'), 'ai');
+                addMessage(aiResponse, 'ai');
             }
         }
 
