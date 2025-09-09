@@ -351,6 +351,7 @@
                  </div>
             </div>
         </section>
+
     </main>
     
     <!-- AI Chatbot UI -->
@@ -728,7 +729,7 @@
             const recommendations = await callGeminiAPI(systemPrompt, userPrompt);
             recommendationsEl.innerHTML = recommendations;
         }
-
+        
         function setupChatbot() {
             const chatbotContainer = document.getElementById('chatbot-container');
             const toggleButton = document.getElementById('chatbot-toggle');
