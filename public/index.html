@@ -200,39 +200,40 @@
                             <option value="wholesale">Wholesale / Distribution</option>
                             <option value="services">Services / Consulting</option>
                         </select>
+                         <p class="text-xs text-slate-400 mt-2">Selecting an industry will populate the fields below with typical values. You can then edit them with your own numbers.</p>
                     </div>
                      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
                             <label for="calc-sales" class="font-semibold text-slate-700 flex items-center">Annual Sales Revenue
                                 <div class="tooltip ml-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-slate-400"><path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clip-rule="evenodd" /></svg><span class="tooltiptext">Your total revenue from sales over a 12-month period.</span></div>
                             </label>
-                            <input type="number" id="calc-sales" class="input-field mt-1" value="50000000">
+                            <input type="number" id="calc-sales" class="input-field mt-1">
                         </div>
-                        <div>
+                        <div id="cogs-input-container">
                             <label for="calc-cogs" class="font-semibold text-slate-700 flex items-center">Cost of Goods Sold (COGS)
                                  <div class="tooltip ml-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-slate-400"><path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clip-rule="evenodd" /></svg><span class="tooltiptext">The direct costs of producing your goods, including raw materials and labor. For services, this may be low or zero.</span></div>
                             </label>
-                            <input type="number" id="calc-cogs" class="input-field mt-1" value="30000000">
+                            <input type="number" id="calc-cogs" class="input-field mt-1">
                         </div>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                        <div>
+                        <div id="inventory-input-container">
                              <label for="calc-inventory" class="font-semibold text-slate-700 flex items-center">Avg. Inventory
                                 <div class="tooltip ml-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-slate-400"><path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clip-rule="evenodd" /></svg><span class="tooltiptext">The average value of your inventory. (Beginning Inv. + Ending Inv.) / 2. For services, this is likely 0.</span></div>
                              </label>
-                            <input type="number" id="calc-inventory" class="input-field mt-1" value="7500000">
+                            <input type="number" id="calc-inventory" class="input-field mt-1">
                         </div>
                         <div>
                             <label for="calc-ar" class="font-semibold text-slate-700 flex items-center">Avg. A/R
                                 <div class="tooltip ml-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-slate-400"><path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clip-rule="evenodd" /></svg><span class="tooltiptext">Average money owed to you by customers (Accounts Receivable).</span></div>
                             </label>
-                            <input type="number" id="calc-ar" class="input-field mt-1" value="10000000">
+                            <input type="number" id="calc-ar" class="input-field mt-1">
                         </div>
                         <div>
                             <label for="calc-ap" class="font-semibold text-slate-700 flex items-center">Avg. A/P
                                 <div class="tooltip ml-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-slate-400"><path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clip-rule="evenodd" /></svg><span class="tooltiptext">Average money you owe to your suppliers (Accounts Payable).</span></div>
                             </label>
-                            <input type="number" id="calc-ap" class="input-field mt-1" value="5000000">
+                            <input type="number" id="calc-ap" class="input-field mt-1">
                         </div>
                     </div>
                      <button id="calculate-btn" class="w-full btn-primary font-bold py-3 px-4 rounded-lg text-lg">See My Diagnosis</button>
@@ -377,6 +378,12 @@
         const state = {};
         let highestStepReached = 1;
         let GEMINI_API_KEY = '';
+        
+        const industryProfiles = {
+            manufacturing: { sales: 50000000, cogs: 30000000, inventory: 7500000, ar: 10000000, ap: 5000000 },
+            wholesale: { sales: 80000000, cogs: 60000000, inventory: 10000000, ar: 12000000, ap: 8000000 },
+            services: { sales: 20000000, cogs: 0, inventory: 0, ar: 4000000, ap: 1000000 },
+        };
 
         async function fetchApiKey() {
             try {
@@ -451,8 +458,34 @@
             
             document.getElementById('ai-insight-btn').addEventListener('click', getAIDiagnosis);
             
+            document.getElementById('business-nature').addEventListener('change', autoPopulateFields);
+            autoPopulateFields(); // Initial population
+            
             updateProgress(1);
         });
+
+        function autoPopulateFields() {
+            const nature = document.getElementById('business-nature').value;
+            const profile = industryProfiles[nature];
+            const cogsContainer = document.getElementById('cogs-input-container');
+            const inventoryContainer = document.getElementById('inventory-input-container');
+
+            if (profile) {
+                document.getElementById('calc-sales').value = profile.sales;
+                document.getElementById('calc-cogs').value = profile.cogs;
+                document.getElementById('calc-inventory').value = profile.inventory;
+                document.getElementById('calc-ar').value = profile.ar;
+                document.getElementById('calc-ap').value = profile.ap;
+            }
+
+            if (nature === 'services') {
+                cogsContainer.style.display = 'none';
+                inventoryContainer.style.display = 'none';
+            } else {
+                cogsContainer.style.display = 'block';
+                inventoryContainer.style.display = 'block';
+            }
+        }
 
         function showStep(stepNum) {
             if (stepNum > highestStepReached) return;
@@ -504,19 +537,32 @@
             state.ar = parseFloat(document.getElementById('calc-ar').value) || 0;
             state.ap = parseFloat(document.getElementById('calc-ap').value) || 0;
             
+            // 2. Validation
             if (state.sales === 0) {
                 alert("Please enter a valid Annual Sales Revenue to proceed.");
                 return;
             }
+            if (state.cogs > state.sales) {
+                alert("Input Error: Cost of Goods Sold cannot be greater than Annual Sales.");
+                return;
+            }
+            if (state.inventory > state.cogs && state.cogs > 0) {
+                alert("Input Error: Average Inventory should not be greater than annual Cost of Goods Sold.");
+                return;
+            }
+            if (state.ar > state.sales) {
+                alert("Input Error: Average Accounts Receivable should not be greater than annual Sales.");
+                return;
+            }
 
-            // 2. Perform calculations
+            // 3. Perform calculations
             state.dio = state.cogs > 0 ? (state.inventory / state.cogs) * 365 : 0;
             state.dso = state.sales > 0 ? (state.ar / state.sales) * 365 : 0;
             state.dpo = state.cogs > 0 ? (state.ap / state.cogs) * 365 : 0;
             state.ccc = state.dio + state.dso - state.dpo;
             state.wc_req = (state.ar + state.inventory) - state.ap;
             
-            // 3. Populate Diagnosis page
+            // 4. Populate Diagnosis page
             const formatCurrency = (num) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(num);
 
             document.getElementById('dio-result').textContent = state.dio.toFixed(1);
@@ -530,32 +576,25 @@
 
             document.getElementById('funding-gap-result').textContent = formatCurrency(state.wc_req);
             
-            // Insights and Benchmarking
-            const dioCard = document.getElementById('dio-card');
-            const dsoCard = document.getElementById('dso-card');
-            const dpoCard = document.getElementById('dpo-card');
-            
-            const setCardStyle = (card, insightEl, level) => {
-                const styles = {
-                    high: { text: 'This is a key area for improvement.'},
-                    medium: { text: 'This area is healthy, but could be optimized.'},
-                    low: { text: 'This area is performing very well.'},
+            const setInsight = (insightEl, level) => {
+                const insights = {
+                    high: 'This is a key area for improvement.',
+                    medium: 'This area is healthy, but could be optimized.',
+                    low: 'This area is performing very well.',
                 };
-                insightEl.textContent = styles[level].text;
+                insightEl.textContent = insights[level];
             };
 
-            setCardStyle(dioCard, document.getElementById('dio-insight'), state.dio > 75 ? 'high' : state.dio > 45 ? 'medium' : 'low');
-            setCardStyle(dsoCard, document.getElementById('dso-insight'), state.dso > 90 ? 'high' : state.dso > 45 ? 'medium' : 'low');
-            setCardStyle(dpoCard, document.getElementById('dpo-insight'), state.dpo < 30 ? 'high' : state.dpo < 60 ? 'medium' : 'low');
+            setInsight(document.getElementById('dio-insight'), state.dio > 75 ? 'high' : state.dio > 45 ? 'medium' : 'low');
+            setInsight(document.getElementById('dso-insight'), state.dso > 90 ? 'high' : state.dso > 45 ? 'medium' : 'low');
+            setInsight(document.getElementById('dpo-insight'), state.dpo < 30 ? 'high' : state.dpo < 60 ? 'medium' : 'low');
 
             if(state.ccc <= 45) { document.getElementById('ccc-insight').textContent = "Your cash cycle is excellent. This indicates a highly efficient operation with minimal need for external financing."; }
             else if (state.ccc <= 75) { document.getElementById('ccc-insight').textContent = "Your cash cycle is healthy. Your business converts its investments into cash at a good pace."; }
             else { document.getElementById('ccc-insight').textContent = "Your cash cycle needs improvement. A lot of your cash is tied up for a long time, which likely requires you to use more external financing."; }
             
-            // Hide previous AI insight if user goes back and forth
             document.getElementById('ai-insight-result').classList.add('hidden');
             document.getElementById('ai-insight-result').innerHTML = '';
-
 
             highestStepReached = Math.max(highestStepReached, 2);
             showStep(2);
