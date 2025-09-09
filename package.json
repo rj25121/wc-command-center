@@ -1,12 +1,16 @@
 {
-  "name": "working-capital-command-center",
+  "name": "wc-command-center",
   "version": "1.0.0",
-  "description": "A diagnostic tool for working capital.",
+  "description": "A working capital diagnostic tool with AI insights.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
     "express": "^4.19.2"
+  },
+  "engines": {
+    "node": "18.x"
   }
 }
+
