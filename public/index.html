@@ -433,6 +433,8 @@
             document.getElementById('dio-slider').addEventListener('input', runStrategySim);
             document.getElementById('dpo-slider').addEventListener('input', runStrategySim);
             
+            document.getElementById('ai-insight-btn').addEventListener('click', getAIDiagnosis);
+            
             document.getElementById('business-nature').addEventListener('change', autoPopulateFields);
             autoPopulateFields();
             
@@ -585,21 +587,17 @@
         
         async function getAIDiagnosis() {
             const btn = document.getElementById('ai-insight-btn');
-            const btnText = document.getElementById('ai-insight-btn-text');
-            const loader = document.getElementById('ai-insight-loader');
-            const resultDiv = document.getElementById('ai-insight-result');
-            
+            const originalBtnHTML = btn.innerHTML;
             btn.disabled = true;
-            btnText.textContent = 'Getting Insight...';
-            loader.classList.remove('hidden');
+            btn.innerHTML = `<div class="loader mx-auto"></div>`;
+            const resultDiv = document.getElementById('ai-insight-result');
             resultDiv.classList.add('hidden');
 
             await apiKeyPromise;
             if (!GEMINI_API_KEY) {
                 resultDiv.innerHTML = `<strong>API Key not configured.</strong> The server is not providing an API key. Please ensure it is set up correctly in the deployment environment.`;
                 resultDiv.classList.remove('hidden');
-                loader.classList.add('hidden');
-                btnText.textContent = '✨ Get Deeper AI Insight';
+                btn.innerHTML = originalBtnHTML;
                 btn.disabled = false;
                 return;
             }
@@ -611,9 +609,8 @@
             
             resultDiv.innerHTML = insight.replace(/\n/g, '<br>');
             
-            loader.classList.add('hidden');
             resultDiv.classList.remove('hidden');
-            btnText.textContent = '✨ Get Deeper AI Insight';
+            btn.innerHTML = originalBtnHTML;
             btn.disabled = false;
         }
 
