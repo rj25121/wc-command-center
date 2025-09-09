@@ -21,8 +21,8 @@ app.get('/api/get-key', (req, res) => {
   }
 });
 
-// A catch-all route to serve the index.html file for any non-API request.
-// This ensures that your single-page application loads correctly.
+// Add a catch-all route to serve the index.html file for any non-API request.
+// This is crucial for single-page applications.
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
