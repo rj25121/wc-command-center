@@ -218,7 +218,7 @@
                 
                 <div class="mt-8 pt-8 border-t border-slate-200">
                     <button id="ai-insight-btn" class="w-full btn-secondary text-lg font-bold py-3 px-4 rounded-lg flex items-center justify-center space-x-2">
-                        <span>✨ Get Deeper AI Insight</span>
+                        <span id="ai-insight-btn-text">✨ Get Deeper AI Insight</span>
                         <div id="ai-insight-loader" class="loader hidden"></div>
                     </button>
                     <div id="ai-insight-result" class="mt-4 bg-blue-50 p-4 rounded-lg text-blue-900 hidden"></div>
@@ -364,6 +364,8 @@
             services: { sales: 20000000, cogs: 0, inventory: 0, ar: 4000000, ap: 1000000 },
         };
 
+        const apiKeyPromise = fetchApiKey();
+
         async function fetchApiKey() {
             try {
                 const response = await fetch('/api/get-key');
@@ -382,11 +384,11 @@
         }
         
         async function callGeminiAPI(systemPrompt, userPrompt, retries = 3, delay = 1000) {
+            await apiKeyPromise; // Ensure API key is fetched before making a call
             if (!GEMINI_API_KEY) {
                 return "Error: API Key not configured. Please set the GEMINI_API_KEY environment variable on the server.";
             }
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${GEMINI_API_KEY}`;
-
             const payload = {
                 contents: [{ parts: [{ text: userPrompt }] }],
                 systemInstruction: { parts: [{ text: systemPrompt }] },
@@ -399,17 +401,11 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
                     });
-
-                    if (!response.ok) {
-                        throw new Error(`API call failed with status: ${response.status}`);
-                    }
-
+                    if (!response.ok) throw new Error(`API call failed with status: ${response.status}`);
                     const result = await response.json();
                     if (result.candidates && result.candidates[0].content.parts[0].text) {
                         return result.candidates[0].content.parts[0].text;
-                    } else {
-                        throw new Error("Invalid response structure from API.");
-                    }
+                    } else { throw new Error("Invalid response structure from API."); }
                 } catch (error) {
                     if (i === retries - 1) {
                         console.error("API call failed after multiple retries:", error);
@@ -422,7 +418,6 @@
 
 
         document.addEventListener('DOMContentLoaded', () => {
-            fetchApiKey();
             document.getElementById('calculate-btn').addEventListener('click', runStep2);
             document.getElementById('to-strategy-btn').addEventListener('click', runStep3);
             document.getElementById('to-report-btn').addEventListener('click', runStep4);
@@ -589,20 +584,25 @@
         }
         
         async function getAIDiagnosis() {
-            if (!GEMINI_API_KEY) {
-                const resultDiv = document.getElementById('ai-insight-result');
-                resultDiv.innerHTML = `<strong>API Key not configured.</strong> The server is not providing an API key. Please ensure it is set up correctly in the deployment environment.`;
-                resultDiv.classList.remove('hidden');
-                return;
-            }
-
             const btn = document.getElementById('ai-insight-btn');
+            const btnText = document.getElementById('ai-insight-btn-text');
             const loader = document.getElementById('ai-insight-loader');
             const resultDiv = document.getElementById('ai-insight-result');
             
             btn.disabled = true;
+            btnText.textContent = 'Getting Insight...';
             loader.classList.remove('hidden');
             resultDiv.classList.add('hidden');
+
+            await apiKeyPromise;
+            if (!GEMINI_API_KEY) {
+                resultDiv.innerHTML = `<strong>API Key not configured.</strong> The server is not providing an API key. Please ensure it is set up correctly in the deployment environment.`;
+                resultDiv.classList.remove('hidden');
+                loader.classList.add('hidden');
+                btnText.textContent = '✨ Get Deeper AI Insight';
+                btn.disabled = false;
+                return;
+            }
 
             const systemPrompt = "You are a senior financial consultant. Your client, a business owner, has provided you with their key working capital metrics. Explain what these numbers mean for their business's cash flow in a single, concise paragraph. Be clear, direct, and avoid jargon.";
             const userPrompt = `My company is in the ${state.businessNature} business. Our current metrics are: Days Inventory Outstanding (DIO) of ${state.dio.toFixed(0)} days, Days Sales Outstanding (DSO) of ${state.dso.toFixed(0)} days, and Days Payable Outstanding (DPO) of ${state.dpo.toFixed(0)} days. This results in a Cash Conversion Cycle of ${state.ccc.toFixed(0)} days. What is the story these numbers tell about my business's health?`;
@@ -613,6 +613,7 @@
             
             loader.classList.add('hidden');
             resultDiv.classList.remove('hidden');
+            btnText.textContent = '✨ Get Deeper AI Insight';
             btn.disabled = false;
         }
 
@@ -743,6 +744,13 @@
                 loaderDiv.innerHTML = '<div class="loader"></div>';
                 chatHistory.appendChild(loaderDiv);
                 chatHistory.scrollTop = chatHistory.scrollHeight;
+                
+                await apiKeyPromise;
+                if (!GEMINI_API_KEY) {
+                    chatHistory.removeChild(loaderDiv);
+                    addMessage("Sorry, the AI assistant is currently unavailable. Please ensure the server is configured correctly.", 'ai');
+                    return;
+                }
                 
                 const systemPrompt = "You are an expert financial consultant chatbot. Your goal is to help a business owner understand their working capital. Use their provided data to answer their questions concisely and clearly, in 8-10 lines max. Use bullet points. Avoid jargon where possible. Format your answers for readability in a chat window, using bold text for key terms.";
                 const context = `The user is running a ${state.businessNature} business. Their current metrics are: DIO=${state.dio.toFixed(0)}, DSO=${state.dso.toFixed(0)}, DPO=${state.dpo.toFixed(0)}, and CCC=${state.ccc.toFixed(0)} days. Their working capital requirement is ${new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(state.wc_req)}.`;
