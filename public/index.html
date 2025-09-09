@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Working Capital Command Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #f1f5f9; /* Slate 100 */
+            --bg-card: #ffffff;
+            --color-text-header: #0f172a; /* Slate 900 */
+            --color-text-body: #475569; /* Slate 600 */
+            --color-primary: #2563eb; /* Blue 600 */
+            --color-primary-hover: #1d4ed8; /* Blue 700 */
+            --color-secondary: #64748b; /* Slate 500 */
+            --color-border: #e2e8f0; /* Slate 200 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--color-text-body);
+        }
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: white;
+            transition: background-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: var(--color-primary-hover);
+        }
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--color-secondary);
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        .btn-secondary:hover {
+            color: var(--color-text-header);
+        }
+        .card {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            border: 1px solid var(--color-border);
+        }
+        .input-field {
+             width: 100%;
+             padding: 0.75rem 1rem;
+             border-radius: 0.5rem;
+             border: 1px solid #cbd5e1;
+             background-color: #f8fafc;
+             font-size: 1rem;
+        }
+        .input-field:focus {
+            outline: 2px solid var(--color-primary);
+            border-color: transparent;
+        }
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 220px;
+            background-color: #334155;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -110px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #334155 transparent transparent transparent;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e5e7eb;
+            border-radius: 9999px;
+            height: 8px;
+        }
+        .progress-bar {
+            background-color: var(--color-primary);
+            height: 8px;
+            border-radius: 9999px;
+            transition: width 0.5s ease-in-out;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 1.5rem;
+            width: 1.5rem;
+            background-color: var(--color-primary);
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            margin-top: -8px;
+        }
+         input[type=range]::-webkit-slider-runnable-track {
+            background: #e2e8f0;
+            height: 0.5rem;
+            border-radius: 0.25rem;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--color-primary);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @media print {
+            body {
+                background-color: white;
+            }
+            .no-print {
+                display: none;
+            }
+            .card {
+                box-shadow: none;
+                border: 1px solid var(--color-border);
+            }
+            #step-4 {
+                display: block !important;
+            }
+            header, footer, #step-1, #step-2, #step-3 {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50 no-print">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-2">
+                     <svg class="h-8 w-8 text-var(--color-primary)" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
+                    </svg>
+                    <h1 class="text-xl font-bold text-var(--color-text-header)">Working Capital Command Center</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        <!-- Step Indicator -->
+        <div class="max-w-4xl mx-auto mb-12 no-print">
+            <div class="flex justify-between mb-2">
+                <span id="step-label-1" class="font-bold">Step 1: Snapshot</span>
+                <span id="step-label-2" class="font-bold">Step 2: Diagnosis</span>
+                <span id="step-label-3" class="font-bold">Step 3: Strategy</span>
+            </div>
+            <div class="progress-bar-container">
+                <div id="progress-bar" class="progress-bar"></div>
+            </div>
+        </div>
+
+        <!-- Step 1: Landing & Input -->
+        <section id="step-1">
+            <div class="text-center">
+                <h2 class="text-4xl md:text-5xl font-extrabold text-var(--color-text-header) tracking-tight">Unlock Your Hidden Cash</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">Most businesses have significant cash trapped in their day-to-day operations. This 3-minute diagnostic will find yours.</p>
+            </div>
+            <div class="card mt-12 max-w-2xl mx-auto p-8">
+                <h3 class="text-2xl font-bold text-var(--color-text-header) mb-6 text-center">Your Business Snapshot</h3>
+                <p class="text-center text-slate-500 mb-8">To get started, tell us about your business and provide five key numbers from your annual financial statements.</p>
+                <div class="space-y-6">
+                    <div>
+                        <label for="business-nature" class="font-semibold text-slate-700">Nature of Business</label>
+                        <select id="business-nature" class="input-field mt-1">
+                            <option value="manufacturing">Manufacturing</option>
+                            <option value="wholesale">Wholesale / Distribution</option>
+                            <option value="services">Services / Consulting</option>
+                        </select>
+                    </div>
+                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label for="calc-sales" class="font-semibold text-slate-700 flex items-center">Annual Sales Revenue
+                                <div class="tooltip ml-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-slate-400"><path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clip-rule="evenodd" /></svg><span class="tooltiptext">Your total revenue from sales over a 12-month period.</span></div>
+                            </label>
+                            <input type="number" id="calc-sales" class="input-field mt-1" value="50000000">
+                        </div>
+                        <div>
+                            <label for="calc-cogs" class="font-semibold text-slate-700 flex items-center">Cost of Goods Sold (COGS)
+                                 <div class="tooltip ml-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-slate-400"><path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clip-rule="evenodd" /></svg><span class="tooltiptext">The direct costs of producing your goods, including raw materials and labor. For services, this may be low or zero.</span></div>
+                            </label>
+                            <input type="number" id="calc-cogs" class="input-field mt-1" value="30000000">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                        <div>
+                             <label for="calc-inventory" class="font-semibold text-slate-700 flex items-center">Avg. Inventory
+                                <div class="tooltip ml-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-slate-400"><path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clip-rule="evenodd" /></svg><span class="tooltiptext">The average value of your inventory. (Beginning Inv. + Ending Inv.) / 2. For services, this is likely 0.</span></div>
+                             </label>
+                            <input type="number" id="calc-inventory" class="input-field mt-1" value="7500000">
+                        </div>
+                        <div>
+                            <label for="calc-ar" class="font-semibold text-slate-700 flex items-center">Avg. A/R
+                                <div class="tooltip ml-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-slate-400"><path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clip-rule="evenodd" /></svg><span class="tooltiptext">Average money owed to you by customers (Accounts Receivable).</span></div>
+                            </label>
+                            <input type="number" id="calc-ar" class="input-field mt-1" value="10000000">
+                        </div>
+                        <div>
+                            <label for="calc-ap" class="font-semibold text-slate-700 flex items-center">Avg. A/P
+                                <div class="tooltip ml-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-slate-400"><path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clip-rule="evenodd" /></svg><span class="tooltiptext">Average money you owe to your suppliers (Accounts Payable).</span></div>
+                            </label>
+                            <input type="number" id="calc-ap" class="input-field mt-1" value="5000000">
+                        </div>
+                    </div>
+                     <button id="calculate-btn" class="w-full btn-primary font-bold py-3 px-4 rounded-lg text-lg">See My Diagnosis</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 2: Diagnosis -->
+        <section id="step-2" class="hidden">
+            <div class="text-center">
+                <h2 class="text-4xl md:text-5xl font-extrabold text-var(--color-text-header) tracking-tight">Your Working Capital Health Report</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">Here's your diagnosis. This report shows how efficiently your business uses cash to operate.</p>
+            </div>
+            <div class="card mt-12 max-w-5xl mx-auto p-8">
+                <h3 class="text-2xl font-bold text-var(--color-text-header) mb-6">The Three Levers of Your Cash Flow</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div id="dio-card" class="p-6 rounded-lg border-l-4 border-slate-300 bg-slate-50"><h4 class="font-bold text-lg mb-1">Days Inventory Outstanding (DIO)</h4><p class="text-4xl font-extrabold mb-2"><span id="dio-result"></span> Days</p><p id="dio-insight" class="text-sm"></p></div>
+                    <div id="dso-card" class="p-6 rounded-lg border-l-4 border-slate-300 bg-slate-50"><h4 class="font-bold text-lg mb-1">Days Sales Outstanding (DSO)</h4><p class="text-4xl font-extrabold mb-2"><span id="dso-result"></span> Days</p><p id="dso-insight" class="text-sm"></p></div>
+                    <div id="dpo-card" class="p-6 rounded-lg border-l-4 border-slate-300 bg-slate-50"><h4 class="font-bold text-lg mb-1">Days Payable Outstanding (DPO)</h4><p class="text-4xl font-extrabold mb-2"><span id="dpo-result"></span> Days</p><p id="dpo-insight" class="text-sm"></p></div>
+                </div>
+
+                <div class="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold text-var(--color-text-header) mb-2">The Master Metric: Your Cash Conversion Cycle</h3>
+                        <div class="flex items-center gap-2 text-xl font-bold my-4">
+                            <span id="ccc-dio" class="text-var(--color-text-body)"></span> + <span id="ccc-dso" class="text-var(--color-text-body)"></span> - <span id="ccc-dpo" class="text-var(--color-text-body)"></span> = <span id="ccc-result" class="text-4xl text-var(--color-primary) ml-2"></span><span class="text-var(--color-primary) text-lg ml-1">Days</span>
+                        </div>
+                        <p id="ccc-insight" class="text-slate-600"></p>
+                    </div>
+                     <div class="bg-slate-50 p-6 rounded-xl">
+                        <h4 class="text-lg font-bold text-center text-var(--color-text-header)">Your Bottom Line</h4>
+                        <p class="text-4xl text-center font-extrabold text-var(--color-primary) my-2" id="funding-gap-result"></p>
+                        <p class="text-center text-slate-500">This is your Working Capital Requirement — the cash needed to bridge the gap between paying suppliers and getting paid by customers.</p>
+                    </div>
+                </div>
+                
+                <div class="mt-8 pt-8 border-t border-slate-200">
+                    <button id="ai-insight-btn" class="w-full btn-secondary text-lg font-bold py-3 px-4 rounded-lg flex items-center justify-center space-x-2">
+                        <span>✨ Get Deeper AI Insight</span>
+                        <div id="ai-insight-loader" class="loader hidden"></div>
+                    </button>
+                    <div id="ai-insight-result" class="mt-4 bg-blue-50 p-4 rounded-lg text-blue-900 hidden"></div>
+                </div>
+
+                <div class="mt-12 flex justify-center items-center gap-6">
+                    <button id="back-to-step-1" class="btn-secondary py-3 px-6 rounded-lg">← Back to Snapshot</button>
+                    <button id="to-strategy-btn" class="btn-primary font-bold py-3 px-6 rounded-lg text-lg">Next: Build Your Strategy →</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 3: Strategy -->
+        <section id="step-3" class="hidden">
+            <div class="text-center">
+                <h2 class="text-4xl md:text-5xl font-extrabold text-var(--color-text-header) tracking-tight">The Strategy Room</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">You've seen your diagnosis. Now, let's see how you can improve it. Use the sliders to simulate how small changes can unlock significant cash.</p>
+            </div>
+             <div class="card mt-12 max-w-5xl mx-auto p-8">
+                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <div class="space-y-8">
+                        <div>
+                            <label for="dso-slider" class="font-semibold">Improve Collection Speed (Reduce DSO by <span id="dso-slider-val" class="font-bold text-var(--color-primary)">0</span> days)</label>
+                            <input type="range" id="dso-slider" min="0" max="60" value="0" class="w-full mt-2">
+                        </div>
+                        <div>
+                            <label for="dio-slider" class="font-semibold">Improve Inventory Turnover (Reduce DIO by <span id="dio-slider-val" class="font-bold text-var(--color-primary)">0</span> days)</label>
+                            <input type="range" id="dio-slider" min="0" max="60" value="0" class="w-full mt-2">
+                        </div>
+                        <div>
+                            <label for="dpo-slider" class="font-semibold">Extend Supplier Payments (Increase DPO by <span id="dpo-slider-val" class="font-bold text-var(--color-primary)">0</span> days)</label>
+                            <input type="range" id="dpo-slider" min="0" max="60" value="0" class="w-full mt-2">
+                        </div>
+                    </div>
+                    <div class="bg-slate-50 p-8 rounded-xl text-center flex flex-col justify-center">
+                        <h4 class="text-lg font-bold text-var(--color-text-header)">Cash Unlocked By Your Strategy</h4>
+                        <p class="text-5xl font-extrabold text-var(--color-primary) my-4" id="cash-unlocked-result">₹0</p>
+                        <p class="text-slate-600">This is additional cash that would be available to your business for growth, investment, or reducing debt.</p>
+                        <hr class="my-6">
+                        <h4 class="font-semibold text-var(--color-text-header)">New Cash Conversion Cycle</h4>
+                        <p class="text-3xl font-bold text-var(--color-primary)" id="new-ccc-result"></p>
+                    </div>
+                 </div>
+                 <div class="mt-12 flex justify-center items-center gap-6">
+                    <button id="back-to-step-2" class="btn-secondary py-3 px-6 rounded-lg">← Back to Diagnosis</button>
+                    <button id="to-report-btn" class="btn-primary font-bold py-3 px-6 rounded-lg text-lg">View My Action Plan</button>
+                </div>
+             </div>
+        </section>
+        
+        <!-- Step 4: Report -->
+        <section id="step-4" class="hidden">
+            <div class="text-center no-print">
+                <h2 class="text-4xl md:text-5xl font-extrabold text-var(--color-text-header) tracking-tight">Your Working Capital Action Plan</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">Here is a summary of your diagnosis and strategic plan. Use this report to guide your operational improvements.</p>
+                 <button onclick="window.print()" class="mt-8 btn-primary font-bold py-2 px-6 rounded-lg">Print or Save as PDF</button>
+            </div>
+            <div class="card mt-12 max-w-4xl mx-auto p-8" id="report-content">
+                 <h3 class="text-3xl font-bold text-var(--color-text-header) text-center">Working Capital Health Report</h3>
+                 <p class="text-center text-slate-500 mb-8" id="report-date"></p>
+                 
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-slate-50 p-6 rounded-lg">
+                        <h4 class="font-bold text-lg mb-4">Current Diagnosis</h4>
+                        <div class="space-y-3">
+                            <div class="flex justify-between"><span>Cash Conversion Cycle (CCC):</span><span class="font-bold" id="report-current-ccc"></span></div>
+                            <div class="flex justify-between"><span>Working Capital Requirement:</span><span class="font-bold" id="report-current-wc"></span></div>
+                            <hr>
+                            <div class="flex justify-between text-sm"><span>Days Inventory Outstanding (DIO):</span><span class="font-semibold" id="report-current-dio"></span></div>
+                            <div class="flex justify-between text-sm"><span>Days Sales Outstanding (DSO):</span><span class="font-semibold" id="report-current-dso"></span></div>
+                            <div class="flex justify-between text-sm"><span>Days Payable Outstanding (DPO):</span><span class="font-semibold" id="report-current-dpo"></span></div>
+                        </div>
+                    </div>
+                     <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
+                        <h4 class="font-bold text-lg mb-4 text-blue-800">Strategic Opportunity</h4>
+                        <div class="space-y-3">
+                            <div class="flex justify-between"><span>Potential New CCC:</span><span class="font-bold text-blue-700" id="report-new-ccc"></span></div>
+                            <div class="flex justify-between"><span>Potential Cash Unlocked:</span><span class="font-bold text-blue-700" id="report-cash-unlocked"></span></div>
+                            <hr>
+                             <div class="flex justify-between text-sm"><span>Reduce DSO by:</span><span class="font-semibold" id="report-dso-change"></span></div>
+                             <div class="flex justify-between text-sm"><span>Reduce DIO by:</span><span class="font-semibold" id="report-dio-change"></span></div>
+                             <div class="flex justify-between text-sm"><span>Increase DPO by:</span><span class="font-semibold" id="report-dpo-change"></span></div>
+                        </div>
+                    </div>
+                 </div>
+
+                 <div class="mt-8">
+                     <h4 class="text-xl font-bold mb-4">✨ AI-Powered Recommendations</h4>
+                     <div id="recommendations" class="space-y-4 text-slate-700">
+                        <div class="flex justify-center items-center h-24">
+                            <div class="loader"></div>
+                        </div>
+                     </div>
+                 </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-white mt-12 no-print"><div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center text-slate-500 text-sm"><p>&copy; 2025 Working Capital Command Center. All data is illustrative.</p></div></footer>
+
+    <script>
+        const state = {};
+        let highestStepReached = 1;
+        
+        // IMPORTANT: PASTE YOUR GEMINI API KEY HERE
+        const GEMINI_API_KEY = "PASTE_YOUR_GEMINI_API_KEY_HERE";
+
+        // --- Gemini API Call Function ---
+        async function callGeminiAPI(systemPrompt, userPrompt, retries = 3, delay = 1000) {
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${GEMINI_API_KEY}`;
+
+            const payload = {
+                contents: [{ parts: [{ text: userPrompt }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+            };
+
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`API call failed with status: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    if (result.candidates && result.candidates[0].content.parts[0].text) {
+                        return result.candidates[0].content.parts[0].text;
+                    } else {
+                        throw new Error("Invalid response structure from API.");
+                    }
+                } catch (error) {
+                    if (i === retries - 1) {
+                        console.error("API call failed after multiple retries:", error);
+                        return "Error: Unable to generate AI recommendations at this time.";
+                    }
+                    await new Promise(res => setTimeout(res, delay * Math.pow(2, i)));
+                }
+            }
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('calculate-btn').addEventListener('click', runStep2);
+            document.getElementById('to-strategy-btn').addEventListener('click', runStep3);
+            document.getElementById('to-report-btn').addEventListener('click', runStep4);
+
+            document.getElementById('back-to-step-1').addEventListener('click', () => showStep(1));
+            document.getElementById('back-to-step-2').addEventListener('click', () => showStep(2));
+            
+            document.getElementById('step-label-1').addEventListener('click', () => showStep(1));
+            document.getElementById('step-label-2').addEventListener('click', () => showStep(2));
+            document.getElementById('step-label-3').addEventListener('click', () => showStep(3));
+
+            document.getElementById('dso-slider').addEventListener('input', runStrategySim);
+            document.getElementById('dio-slider').addEventListener('input', runStrategySim);
+            document.getElementById('dpo-slider').addEventListener('input', runStrategySim);
+            
+            document.getElementById('ai-insight-btn').addEventListener('click', getAIDiagnosis);
+            
+            updateProgress(1);
+        });
+
+        function showStep(stepNum) {
+            if (stepNum > highestStepReached) return;
+
+            ['step-1', 'step-2', 'step-3', 'step-4'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+
+            document.getElementById(`step-${stepNum}`).classList.remove('hidden');
+            updateProgress(stepNum);
+            window.scrollTo(0, 0);
+        }
+
+        function updateProgress(step) {
+            const bar = document.getElementById('progress-bar');
+            const labels = [
+                document.getElementById('step-label-1'),
+                document.getElementById('step-label-2'),
+                document.getElementById('step-label-3')
+            ];
+            
+            const widths = ['15%', '50%', '85%', '100%'];
+            bar.style.width = widths[step-1];
+
+            labels.forEach((label, index) => {
+                const stepNumber = index + 1;
+                if (stepNumber <= highestStepReached) {
+                    label.classList.add('cursor-pointer');
+                } else {
+                    label.classList.remove('cursor-pointer');
+                }
+
+                if (stepNumber === step) {
+                    label.classList.remove('text-slate-400');
+                    label.classList.add('text-var(--color-primary)');
+                } else {
+                    label.classList.remove('text-var(--color-primary)');
+                    label.classList.add('text-slate-400');
+                }
+            });
+        }
+
+        function runStep2() {
+            // 1. Collect and store data
+            state.businessNature = document.getElementById('business-nature').value;
+            state.sales = parseFloat(document.getElementById('calc-sales').value) || 0;
+            state.cogs = parseFloat(document.getElementById('calc-cogs').value) || 0;
+            state.inventory = parseFloat(document.getElementById('calc-inventory').value) || 0;
+            state.ar = parseFloat(document.getElementById('calc-ar').value) || 0;
+            state.ap = parseFloat(document.getElementById('calc-ap').value) || 0;
+            
+            if (state.sales === 0) {
+                alert("Please enter a valid Annual Sales Revenue to proceed.");
+                return;
+            }
+
+            // 2. Perform calculations
+            state.dio = state.cogs > 0 ? (state.inventory / state.cogs) * 365 : 0;
+            state.dso = state.sales > 0 ? (state.ar / state.sales) * 365 : 0;
+            state.dpo = state.cogs > 0 ? (state.ap / state.cogs) * 365 : 0;
+            state.ccc = state.dio + state.dso - state.dpo;
+            state.wc_req = (state.ar + state.inventory) - state.ap;
+            
+            // 3. Populate Diagnosis page
+            const formatCurrency = (num) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(num);
+
+            document.getElementById('dio-result').textContent = state.dio.toFixed(1);
+            document.getElementById('dso-result').textContent = state.dso.toFixed(1);
+            document.getElementById('dpo-result').textContent = state.dpo.toFixed(1);
+
+            document.getElementById('ccc-dio').textContent = state.dio.toFixed(1);
+            document.getElementById('ccc-dso').textContent = state.dso.toFixed(1);
+            document.getElementById('ccc-dpo').textContent = state.dpo.toFixed(1);
+            document.getElementById('ccc-result').textContent = state.ccc.toFixed(1);
+
+            document.getElementById('funding-gap-result').textContent = formatCurrency(state.wc_req);
+            
+            // Insights and Benchmarking
+            const dioCard = document.getElementById('dio-card');
+            const dsoCard = document.getElementById('dso-card');
+            const dpoCard = document.getElementById('dpo-card');
+            
+            const setCardStyle = (card, insightEl, level) => {
+                const styles = {
+                    high: { text: 'This is a key area for improvement.'},
+                    medium: { text: 'This area is healthy, but could be optimized.'},
+                    low: { text: 'This area is performing very well.'},
+                };
+                insightEl.textContent = styles[level].text;
+            };
+
+            setCardStyle(dioCard, document.getElementById('dio-insight'), state.dio > 75 ? 'high' : state.dio > 45 ? 'medium' : 'low');
+            setCardStyle(dsoCard, document.getElementById('dso-insight'), state.dso > 90 ? 'high' : state.dso > 45 ? 'medium' : 'low');
+            setCardStyle(dpoCard, document.getElementById('dpo-insight'), state.dpo < 30 ? 'high' : state.dpo < 60 ? 'medium' : 'low');
+
+            if(state.ccc <= 45) { document.getElementById('ccc-insight').textContent = "Your cash cycle is excellent. This indicates a highly efficient operation with minimal need for external financing."; }
+            else if (state.ccc <= 75) { document.getElementById('ccc-insight').textContent = "Your cash cycle is healthy. Your business converts its investments into cash at a good pace."; }
+            else { document.getElementById('ccc-insight').textContent = "Your cash cycle needs improvement. A lot of your cash is tied up for a long time, which likely requires you to use more external financing."; }
+            
+            // Hide previous AI insight if user goes back and forth
+            document.getElementById('ai-insight-result').classList.add('hidden');
+            document.getElementById('ai-insight-result').innerHTML = '';
+
+
+            highestStepReached = Math.max(highestStepReached, 2);
+            showStep(2);
+        }
+        
+        async function getAIDiagnosis() {
+            if (GEMINI_API_KEY === "PASTE_YOUR_GEMINI_API_KEY_HERE") {
+                const resultDiv = document.getElementById('ai-insight-result');
+                resultDiv.innerHTML = `<strong>API Key Missing.</strong> To enable this feature, open the HTML file, search for "PASTE_YOUR_GEMINI_API_KEY_HERE", and replace it with your actual Google AI Studio API key.`;
+                resultDiv.classList.remove('hidden');
+                return;
+            }
+
+            const btn = document.getElementById('ai-insight-btn');
+            const loader = document.getElementById('ai-insight-loader');
+            const resultDiv = document.getElementById('ai-insight-result');
+            
+            btn.disabled = true;
+            loader.classList.remove('hidden');
+            resultDiv.classList.add('hidden');
+
+            const systemPrompt = "You are a senior financial consultant. Your client, a business owner, has provided you with their key working capital metrics. Explain what these numbers mean for their business's cash flow in a single, concise paragraph. Be clear, direct, and avoid jargon.";
+            const userPrompt = `My company is in the ${state.businessNature} business. Our current metrics are: Days Inventory Outstanding (DIO) of ${state.dio.toFixed(0)} days, Days Sales Outstanding (DSO) of ${state.dso.toFixed(0)} days, and Days Payable Outstanding (DPO) of ${state.dpo.toFixed(0)} days. This results in a Cash Conversion Cycle of ${state.ccc.toFixed(0)} days. What is the story these numbers tell about my business's health?`;
+            
+            const insight = await callGeminiAPI(systemPrompt, userPrompt);
+            
+            resultDiv.innerHTML = insight.replace(/\n/g, '<br>');
+            
+            loader.classList.add('hidden');
+            resultDiv.classList.remove('hidden');
+            btn.disabled = false;
+        }
+
+        function runStep3() {
+            document.getElementById('dso-slider').max = Math.ceil(state.dso);
+            document.getElementById('dio-slider').max = Math.ceil(state.dio);
+            document.getElementById('dpo-slider').max = 90 - Math.ceil(state.dpo);
+            
+            runStrategySim(); 
+            highestStepReached = Math.max(highestStepReached, 3);
+            showStep(3);
+        }
+        
+        function runStrategySim() {
+            const dsoReduction = parseInt(document.getElementById('dso-slider').value);
+            const dioReduction = parseInt(document.getElementById('dio-slider').value);
+            const dpoIncrease = parseInt(document.getElementById('dpo-slider').value);
+            
+            document.getElementById('dso-slider-val').textContent = dsoReduction;
+            document.getElementById('dio-slider-val').textContent = dioReduction;
+            document.getElementById('dpo-slider-val').textContent = dpoIncrease;
+
+            const newDSO = state.dso - dsoReduction;
+            const newDIO = state.dio - dioReduction;
+            const newDPO = state.dpo + dpoIncrease;
+
+            const newCCC = newDIO + newDSO - newDPO;
+            document.getElementById('new-ccc-result').textContent = `${newCCC.toFixed(1)} Days`;
+
+            const newAR = (newDSO / 365) * state.sales;
+            const newInv = (newDIO / 365) * state.cogs;
+            const newAP = (newDPO / 365) * state.cogs;
+            const newWCReq = (newAR + newInv) - newAP;
+
+            const cashUnlocked = state.wc_req - newWCReq;
+            const formatCurrency = (num) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(num);
+            document.getElementById('cash-unlocked-result').textContent = formatCurrency(cashUnlocked > 0 ? cashUnlocked : 0);
+        }
+        
+        async function runStep4() {
+            const recommendationsEl = document.getElementById('recommendations');
+            recommendationsEl.innerHTML = `<div class="flex justify-center items-center h-24"><div class="loader"></div></div>`;
+            
+            highestStepReached = Math.max(highestStepReached, 4);
+            showStep(4);
+
+            const formatCurrency = (num) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(num);
+
+            document.getElementById('report-date').textContent = `Generated on ${new Date().toLocaleDateString('en-GB')}`;
+            
+            // Current State
+            document.getElementById('report-current-ccc').textContent = `${state.ccc.toFixed(1)} Days`;
+            document.getElementById('report-current-wc').textContent = formatCurrency(state.wc_req);
+            document.getElementById('report-current-dio').textContent = `${state.dio.toFixed(1)} Days`;
+            document.getElementById('report-current-dso').textContent = `${state.dso.toFixed(1)} Days`;
+            document.getElementById('report-current-dpo').textContent = `${state.dpo.toFixed(1)} Days`;
+
+            // New State
+            const dsoReduction = parseInt(document.getElementById('dso-slider').value);
+            const dioReduction = parseInt(document.getElementById('dio-slider').value);
+            const dpoIncrease = parseInt(document.getElementById('dpo-slider').value);
+            
+            const newCCC = (state.dio - dioReduction) + (state.dso - dsoReduction) - (state.dpo + dpoIncrease);
+            const cashUnlocked = parseFloat(document.getElementById('cash-unlocked-result').textContent.replace(/[^0-9.-]+/g,""));
+            
+            document.getElementById('report-new-ccc').textContent = `${newCCC.toFixed(1)} Days`;
+            document.getElementById('report-cash-unlocked').textContent = formatCurrency(cashUnlocked);
+            document.getElementById('report-dso-change').textContent = `${dsoReduction} Days`;
+            document.getElementById('report-dio-change').textContent = `${dioReduction} Days`;
+            document.getElementById('report-dpo-change').textContent = `${dpoIncrease} Days`;
+
+            // AI Recommendations
+             if (GEMINI_API_KEY === "PASTE_YOUR_GEMINI_API_KEY_HERE") {
+                recommendationsEl.innerHTML = `<p class="text-center text-slate-500">Please add your API key in the HTML file to generate AI-powered recommendations.</p>`;
+                return;
+            }
+            
+            const systemPrompt = "You are an expert financial consultant providing an action plan. Your tone is professional and direct. The output must be formatted as an HTML unordered list (`<ul>`). Do not include any introductory text before the list.";
+            const userPrompt = `Based on the following financial metrics for a ${state.businessNature} company, provide three concise, actionable recommendations to improve their cash conversion cycle and unlock cash. For each recommendation, bold the title (e.g., <strong>Optimize Inventory</strong>) and then explain the business impact and specific next steps. The current metrics are: DIO=${state.dio.toFixed(0)}, DSO=${state.dso.toFixed(0)}, DPO=${state.dpo.toFixed(0)}. The strategic goals are to reduce DIO by ${dioReduction} days, reduce DSO by ${dsoReduction} days, and increase DPO by ${dpoIncrease} days.`;
+            
+            const recommendations = await callGeminiAPI(systemPrompt, userPrompt);
+            recommendationsEl.innerHTML = recommendations;
+        }
+
+    </script>
+</body>
+</html>
