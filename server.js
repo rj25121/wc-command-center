@@ -6,7 +6,7 @@ const app = express();
 // The port Render will use.
 const PORT = process.env.PORT || 3000;
 
-// Serve the static files (like CSS, images, etc.) from the 'public' folder.
+// Serve the static files (like your index.html) from the 'public' folder.
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Create a secure endpoint for the app to fetch the API key.
@@ -21,15 +21,13 @@ app.get('/api/get-key', (req, res) => {
   }
 });
 
-// **--- FIX STARTS HERE ---**
-// Add a catch-all route to serve the index.html file for any non-API request.
+// A catch-all route to serve the index.html file for any non-API request.
 // This ensures that your single-page application loads correctly.
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
-// **--- FIX ENDS HERE ---**
-
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
