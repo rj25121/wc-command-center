@@ -24,10 +24,15 @@
             background-color: var(--bg-main);
             color: var(--color-text-body);
         }
+        .btn-primary, .btn-secondary {
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-primary:active, .btn-secondary:active {
+            transform: scale(0.98);
+        }
         .btn-primary {
             background-color: var(--color-primary);
             color: white;
-            transition: background-color 0.3s;
         }
         .btn-primary:hover {
             background-color: var(--color-primary-hover);
@@ -36,7 +41,6 @@
             background-color: transparent;
             color: var(--color-secondary);
             font-weight: 600;
-            transition: color 0.3s;
         }
         .btn-secondary:hover {
             color: var(--color-text-header);
@@ -117,6 +121,7 @@
             border: 4px solid white;
             box-shadow: 0 1px 3px rgba(0,0,0,0.2);
             margin-top: -8px;
+            cursor: pointer;
         }
          input[type=range]::-webkit-slider-runnable-track {
             background: #e2e8f0;
@@ -131,27 +136,14 @@
             height: 30px;
             animation: spin 1s linear infinite;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .chatbot-container.hidden { display: none; }
         @media print {
-            body {
-                background-color: white;
-            }
-            .no-print {
-                display: none;
-            }
-            .card {
-                box-shadow: none;
-                border: 1px solid var(--color-border);
-            }
-            #step-4 {
-                display: block !important;
-            }
-            header, footer, #step-1, #step-2, #step-3 {
-                display: none;
-            }
+            body { background-color: white; }
+            .no-print { display: none; }
+            .card { box-shadow: none; border: 1px solid var(--color-border); }
+            #step-4 { display: block !important; }
+            header, footer, #step-1, #step-2, #step-3 { display: none; }
         }
     </style>
 </head>
@@ -189,7 +181,7 @@
                 <h2 class="text-4xl md:text-5xl font-extrabold text-var(--color-text-header) tracking-tight">Unlock Your Hidden Cash</h2>
                 <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">Most businesses have significant cash trapped in their day-to-day operations. This 3-minute diagnostic will find yours.</p>
             </div>
-            <div class="card mt-12 max-w-2xl mx-auto p-8">
+            <div class="card mt-12 max-w-2xl mx-auto p-6 sm:p-8">
                 <h3 class="text-2xl font-bold text-var(--color-text-header) mb-6 text-center">Your Business Snapshot</h3>
                 <p class="text-center text-slate-500 mb-8">To get started, tell us about your business and provide five key numbers from your annual financial statements.</p>
                 <div class="space-y-6">
@@ -204,35 +196,25 @@
                     </div>
                      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
-                            <label for="calc-sales" class="font-semibold text-slate-700 flex items-center">Annual Sales Revenue
-                                <div class="tooltip ml-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-slate-400"><path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clip-rule="evenodd" /></svg><span class="tooltiptext">Your total revenue from sales over a 12-month period.</span></div>
-                            </label>
+                            <label for="calc-sales" class="font-semibold text-slate-700">Annual Sales Revenue</label>
                             <input type="number" id="calc-sales" class="input-field mt-1">
                         </div>
                         <div id="cogs-input-container">
-                            <label for="calc-cogs" class="font-semibold text-slate-700 flex items-center">Cost of Goods Sold (COGS)
-                                 <div class="tooltip ml-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-slate-400"><path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clip-rule="evenodd" /></svg><span class="tooltiptext">The direct costs of producing your goods, including raw materials and labor. For services, this may be low or zero.</span></div>
-                            </label>
+                            <label for="calc-cogs" class="font-semibold text-slate-700">Cost of Goods Sold (COGS)</label>
                             <input type="number" id="calc-cogs" class="input-field mt-1">
                         </div>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
                         <div id="inventory-input-container">
-                             <label for="calc-inventory" class="font-semibold text-slate-700 flex items-center">Avg. Inventory
-                                <div class="tooltip ml-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-slate-400"><path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clip-rule="evenodd" /></svg><span class="tooltiptext">The average value of your inventory. (Beginning Inv. + Ending Inv.) / 2. For services, this is likely 0.</span></div>
-                             </label>
+                             <label for="calc-inventory" class="font-semibold text-slate-700">Avg. Inventory</label>
                             <input type="number" id="calc-inventory" class="input-field mt-1">
                         </div>
                         <div>
-                            <label for="calc-ar" class="font-semibold text-slate-700 flex items-center">Avg. A/R
-                                <div class="tooltip ml-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-slate-400"><path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clip-rule="evenodd" /></svg><span class="tooltiptext">Average money owed to you by customers (Accounts Receivable).</span></div>
-                            </label>
+                            <label for="calc-ar" class="font-semibold text-slate-700">Avg. A/R</label>
                             <input type="number" id="calc-ar" class="input-field mt-1">
                         </div>
                         <div>
-                            <label for="calc-ap" class="font-semibold text-slate-700 flex items-center">Avg. A/P
-                                <div class="tooltip ml-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-slate-400"><path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clip-rule="evenodd" /></svg><span class="tooltiptext">Average money you owe to your suppliers (Accounts Payable).</span></div>
-                            </label>
+                            <label for="calc-ap" class="font-semibold text-slate-700">Avg. A/P</label>
                             <input type="number" id="calc-ap" class="input-field mt-1">
                         </div>
                     </div>
@@ -247,25 +229,25 @@
                 <h2 class="text-4xl md:text-5xl font-extrabold text-var(--color-text-header) tracking-tight">Your Working Capital Health Report</h2>
                 <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">Here's your diagnosis. This report shows how efficiently your business uses cash to operate.</p>
             </div>
-            <div class="card mt-12 max-w-5xl mx-auto p-8">
+            <div class="card mt-12 max-w-5xl mx-auto p-6 sm:p-8">
                 <h3 class="text-2xl font-bold text-var(--color-text-header) mb-6">The Three Levers of Your Cash Flow</h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div id="dio-card" class="p-6 rounded-lg border-l-4 border-slate-300 bg-slate-50"><h4 class="font-bold text-lg mb-1">Days Inventory Outstanding (DIO)</h4><p class="text-4xl font-extrabold mb-2"><span id="dio-result"></span> Days</p><p id="dio-insight" class="text-sm"></p></div>
-                    <div id="dso-card" class="p-6 rounded-lg border-l-4 border-slate-300 bg-slate-50"><h4 class="font-bold text-lg mb-1">Days Sales Outstanding (DSO)</h4><p class="text-4xl font-extrabold mb-2"><span id="dso-result"></span> Days</p><p id="dso-insight" class="text-sm"></p></div>
-                    <div id="dpo-card" class="p-6 rounded-lg border-l-4 border-slate-300 bg-slate-50"><h4 class="font-bold text-lg mb-1">Days Payable Outstanding (DPO)</h4><p class="text-4xl font-extrabold mb-2"><span id="dpo-result"></span> Days</p><p id="dpo-insight" class="text-sm"></p></div>
+                    <div id="dio-card" class="p-6 rounded-lg bg-slate-50"><h4 class="font-bold text-lg mb-1">Days Inventory Outstanding (DIO)</h4><p class="text-4xl font-extrabold mb-2"><span id="dio-result"></span> Days</p><p id="dio-insight" class="text-sm"></p></div>
+                    <div id="dso-card" class="p-6 rounded-lg bg-slate-50"><h4 class="font-bold text-lg mb-1">Days Sales Outstanding (DSO)</h4><p class="text-4xl font-extrabold mb-2"><span id="dso-result"></span> Days</p><p id="dso-insight" class="text-sm"></p></div>
+                    <div id="dpo-card" class="p-6 rounded-lg bg-slate-50"><h4 class="font-bold text-lg mb-1">Days Payable Outstanding (DPO)</h4><p class="text-4xl font-extrabold mb-2"><span id="dpo-result"></span> Days</p><p id="dpo-insight" class="text-sm"></p></div>
                 </div>
 
                 <div class="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                     <div>
                         <h3 class="text-2xl font-bold text-var(--color-text-header) mb-2">The Master Metric: Your Cash Conversion Cycle</h3>
-                        <div class="flex items-center gap-2 text-xl font-bold my-4">
+                        <div class="flex items-center gap-2 text-xl sm:text-2xl font-bold my-4 flex-wrap">
                             <span id="ccc-dio" class="text-var(--color-text-body)"></span> + <span id="ccc-dso" class="text-var(--color-text-body)"></span> - <span id="ccc-dpo" class="text-var(--color-text-body)"></span> = <span id="ccc-result" class="text-4xl text-var(--color-primary) ml-2"></span><span class="text-var(--color-primary) text-lg ml-1">Days</span>
                         </div>
                         <p id="ccc-insight" class="text-slate-600"></p>
                     </div>
                      <div class="bg-slate-50 p-6 rounded-xl">
                         <h4 class="text-lg font-bold text-center text-var(--color-text-header)">Your Bottom Line</h4>
-                        <p class="text-4xl text-center font-extrabold text-var(--color-primary) my-2" id="funding-gap-result"></p>
+                        <p class="text-3xl sm:text-4xl text-center font-extrabold text-var(--color-primary) my-2" id="funding-gap-result"></p>
                         <p class="text-center text-slate-500">This is your Working Capital Requirement — the cash needed to bridge the gap between paying suppliers and getting paid by customers.</p>
                     </div>
                 </div>
@@ -291,7 +273,7 @@
                 <h2 class="text-4xl md:text-5xl font-extrabold text-var(--color-text-header) tracking-tight">The Strategy Room</h2>
                 <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">You've seen your diagnosis. Now, let's see how you can improve it. Use the sliders to simulate how small changes can unlock significant cash.</p>
             </div>
-             <div class="card mt-12 max-w-5xl mx-auto p-8">
+             <div class="card mt-12 max-w-5xl mx-auto p-6 sm:p-8">
                  <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
                     <div class="space-y-8">
                         <div>
@@ -369,8 +351,40 @@
                  </div>
             </div>
         </section>
-
     </main>
+    
+    <!-- AI Chatbot UI -->
+    <div id="chatbot-container" class="chatbot-container fixed bottom-5 right-5 z-50 no-print hidden">
+        <!-- Chatbot Toggle Button -->
+        <button id="chatbot-toggle" class="bg-var(--color-primary) text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center btn-primary">
+             <svg id="chat-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8">
+                <path fill-rule="evenodd" d="M4.804 21.644A6.707 6.707 0 0 0 6 21.75a6.75 6.75 0 0 0 6.75-6.75v-2.5a.75.75 0 0 1 1.5 0v2.5a8.25 8.25 0 0 1-8.25 8.25c-1.33 0-2.59-.34-3.728-.932l-1.002.445a.75.75 0 0 1-.954-.954l.445-1.002a6.707 6.707 0 0 0-.088-1.588.75.75 0 1 1 1.482.235 5.207 5.207 0 0 1 .087 1.223l-1.12.5a.75.75 0 0 0 .14.14l.5-1.121a5.253 5.253 0 0 1 3.238-1.878Z" clip-rule="evenodd" />
+                <path d="M12 12.25a6.75 6.75 0 0 0 6.75-6.75v-2.5a.75.75 0 0 0-1.5 0v2.5A5.25 5.25 0 0 1 12 10.75a5.253 5.253 0 0 1-3.665-1.42.75.75 0 1 0-1.165.94A6.723 6.723 0 0 0 12 12.25Z" />
+            </svg>
+            <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 hidden">
+                <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+            </svg>
+        </button>
+
+        <!-- Chat Window -->
+        <div id="chat-window" class="hidden absolute bottom-20 right-0 w-80 sm:w-96 bg-white rounded-xl shadow-2xl border border-slate-200 flex flex-col" style="height: 500px;">
+            <div class="bg-slate-100 p-4 rounded-t-xl border-b border-slate-200">
+                <h3 class="font-bold text-var(--color-text-header) text-lg">AI Financial Assistant</h3>
+                <p class="text-sm">Ask anything about your results.</p>
+            </div>
+            <div id="chat-history" class="flex-grow p-4 overflow-y-auto">
+                <!-- Chat messages will be added here -->
+            </div>
+            <div class="p-4 border-t border-slate-200">
+                <div class="flex space-x-2">
+                    <input type="text" id="chat-input" class="input-field flex-grow" placeholder="Ask a question...">
+                    <button id="chat-send-btn" class="btn-primary rounded-lg p-3">
+                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" /></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <footer class="bg-white mt-12 no-print"><div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center text-slate-500 text-sm"><p>&copy; 2025 Working Capital Command Center. All data is illustrative.</p></div></footer>
 
@@ -456,11 +470,10 @@
             document.getElementById('dio-slider').addEventListener('input', runStrategySim);
             document.getElementById('dpo-slider').addEventListener('input', runStrategySim);
             
-            document.getElementById('ai-insight-btn').addEventListener('click', getAIDiagnosis);
-            
             document.getElementById('business-nature').addEventListener('change', autoPopulateFields);
-            autoPopulateFields(); // Initial population
+            autoPopulateFields();
             
+            setupChatbot();
             updateProgress(1);
         });
 
@@ -497,6 +510,13 @@
             document.getElementById(`step-${stepNum}`).classList.remove('hidden');
             updateProgress(stepNum);
             window.scrollTo(0, 0);
+
+            const chatbotContainer = document.getElementById('chatbot-container');
+            if (stepNum > 1) {
+                chatbotContainer.classList.remove('hidden');
+            } else {
+                chatbotContainer.classList.add('hidden');
+            }
         }
 
         function updateProgress(step) {
@@ -707,6 +727,64 @@
             
             const recommendations = await callGeminiAPI(systemPrompt, userPrompt);
             recommendationsEl.innerHTML = recommendations;
+        }
+
+        function setupChatbot() {
+            const chatbotContainer = document.getElementById('chatbot-container');
+            const toggleButton = document.getElementById('chatbot-toggle');
+            const chatWindow = document.getElementById('chat-window');
+            const chatIcon = document.getElementById('chat-icon');
+            const closeIcon = document.getElementById('close-icon');
+            const chatHistory = document.getElementById('chat-history');
+            const chatInput = document.getElementById('chat-input');
+            const sendButton = document.getElementById('chat-send-btn');
+
+            toggleButton.addEventListener('click', () => {
+                chatWindow.classList.toggle('hidden');
+                chatIcon.classList.toggle('hidden');
+                closeIcon.classList.toggle('hidden');
+            });
+
+            sendButton.addEventListener('click', sendChatMessage);
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendChatMessage();
+                }
+            });
+            
+            function addMessage(message, sender) {
+                const messageDiv = document.createElement('div');
+                const bubbleClass = sender === 'user' 
+                    ? 'bg-blue-500 text-white self-end' 
+                    : 'bg-slate-200 text-slate-800 self-start';
+                messageDiv.className = `w-fit max-w-xs sm:max-w-sm rounded-xl p-3 my-1 ${bubbleClass}`;
+                messageDiv.innerHTML = message;
+                chatHistory.appendChild(messageDiv);
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+            }
+
+            async function sendChatMessage() {
+                const userMessage = chatInput.value.trim();
+                if (!userMessage) return;
+
+                addMessage(userMessage, 'user');
+                chatInput.value = '';
+                
+                const loaderDiv = document.createElement('div');
+                loaderDiv.className = 'self-start my-1';
+                loaderDiv.innerHTML = '<div class="loader"></div>';
+                chatHistory.appendChild(loaderDiv);
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+                
+                const systemPrompt = "You are an expert financial consultant chatbot. Your goal is to help a business owner understand their working capital. Use their provided data to answer their questions concisely and clearly. Avoid jargon where possible. Format your answers for readability in a chat window, using bold text for key terms.";
+                const context = `The user is running a ${state.businessNature} business. Their current metrics are: DIO=${state.dio.toFixed(0)}, DSO=${state.dso.toFixed(0)}, DPO=${state.dpo.toFixed(0)}, and CCC=${state.ccc.toFixed(0)} days. Their working capital requirement is ${new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(state.wc_req)}.`;
+                const userPrompt = `${context}\n\nThe user's question is: "${userMessage}"`;
+
+                const aiResponse = await callGeminiAPI(systemPrompt, userPrompt);
+                
+                chatHistory.removeChild(loaderDiv);
+                addMessage(aiResponse.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>'), 'ai');
+            }
         }
 
     </script>
